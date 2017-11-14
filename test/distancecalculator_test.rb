@@ -1,12 +1,13 @@
 require "test_helper"
 
+
 class DistancecalculatorTest < Minitest::Test
 
   def setup
-    @customer_data = { longitude: '121212',
-      latitude: '12321',
-      name: 'Test',
-      user_id: 'df' }
+    @customer_data = { 'longitude' => '-6.043701',
+      'latitude' => '52.986375',
+      'name' => 'Christina McArdle',
+      'user_id' => 12 }
   end
 
   def test_that_it_has_a_version_number
@@ -14,23 +15,28 @@ class DistancecalculatorTest < Minitest::Test
   end
 
   def test_distance
-    customer = Customer.new(@customer_data)
-    assert_equal customer.distance 1234
+    customer = Distancecalculator::Customer.new(@customer_data)
+    assert customer.distance, 5959.145768657998
   end
 
   def test_to_radian
-    customer = Customer.new(@customer_data)
+    customer = Distancecalculator::Customer.new(@customer_data)
     rad = customer.send(:to_radian, 30)
-    assert_equal rad, 23323
+    assert_equal rad, 0.5235987755982988
   end
 
-  def test_nearby?
-    customer_data = { longitude: '121212',
-      latitude: '12321',
-      name: 'Test',
-      user_id: 'df' }
-    customer = Customer.new(customer_data)
-    assert_true customer.nearby?
+  def test_is_nearby?
+    customer = Distancecalculator::Customer.new(@customer_data)
+    assert customer.nearby?
   end
 
+
+  def test_is_not_nearby?
+    customer_data = { 'longitude' => '-10.27699',
+      'latitude' => '51.92893',
+      'name' => 'Alice Cahill',
+      'user_id' => 1 }
+    customer = Distancecalculator::Customer.new(customer_data)
+    refute customer.nearby?
+  end
 end
